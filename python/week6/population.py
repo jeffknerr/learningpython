@@ -15,19 +15,20 @@ def main():
     size = 100000
     prob = 0.5
     numgen = 200
+    usePM = True     # use preferential mating
 
     pop = initPop(size, prob)
     countGenotypes(pop,True)
-    pop = manyGenerations(pop,numgen)
+    pop = manyGenerations(pop,numgen,usePM)
     countGenotypes(pop,True)
 
-def manyGenerations(pop, num):
+def manyGenerations(pop, num, usePM):
     """simulate num generations, return final population"""
     rec = []
     dom = []
     mix = []
     for i in range(num):
-        pop = oneGeneration(pop)
+        pop = oneGeneration(pop,usePM)
         r,d,m = countGenotypes(pop,False)
         rec.append(r)
         dom.append(d)
@@ -35,7 +36,7 @@ def manyGenerations(pop, num):
     genetics.populationGraph(rec,dom,mix)
     return pop
 
-def oneGeneration(pop):
+def oneGeneration(pop,usePM):
     """simulatate one generation, return new pop"""
     newpop = []
     for i in range(len(pop)):
@@ -43,6 +44,11 @@ def oneGeneration(pop):
         parent2 = random.choice(pop)
         allele1 = random.choice(parent1)
         allele2 = random.choice(parent2)
+        if usePM:
+            if allele1 != allele2:
+                # different, so pick p2 again (in hopes of getting same)
+                parent2 = random.choice(pop)
+                allele2 = random.choice(parent2)
         newpop.append(allele1+allele2)
     return newpop
 
