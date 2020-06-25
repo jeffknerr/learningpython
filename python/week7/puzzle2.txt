@@ -1,0 +1,3 @@
+out:not in
+uno:one in Madrid
+too:also
