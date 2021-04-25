@@ -1,0 +1,33 @@
+
+
+
+String and Dictionaries:
+- guess len of these strings
+- validZip(zipcode) function
+- wordSearch(docstrs, keyword): return list if indices
+- multiWordSearch(docstrs, keywords): same, multiple keywords, use previous function
+
+Importing modules:
+- rolls = numpy.random.randint(low=1, high=6, size=10)
+- print(dir(rolls))
+- rolls.mean()
+- rolls.tolist()
+- help(rolls.ravel)
+- rolls + 10
+- rolls <= 3
+[
+    {'name': 'Peach', 'items': ['green shell', 'banana', 'green shell',], 'finish': 3},
+        {'name': 'Bowser', 'items': ['green shell',], 'finish': 1},
+            # Sometimes the racer's name wasn't recorded
+                {'name': None, 'items': ['mushroom',], 'finish': 2},
+                    {'name': 'Toad', 'items': ['green shell', 'mushroom'], 'finish': 1},
+                    ]
+class Racer(object):
+  name
+  list of items
+  car-type
+
+BlackJack: use ace as 11 if possible, otherwise 1
+
+Stuff Not Covered....
+- lots...
