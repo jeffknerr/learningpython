@@ -10,6 +10,9 @@ import matplotlib.pyplot as plt
 
 pd.plotting.register_matplotlib_converters()
 
+sb.set_style("darkgrid")
+sb.set_style("ticks")
+
 mf = "museum-visitors.csv"
 md = pd.read_csv(mf, index_col="Month", parse_dates=True)
 museum_data = md[['Avila Adobe', 'Firehouse Museum',
