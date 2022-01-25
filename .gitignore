@@ -1,3 +1,15 @@
+# my stuff
+pandas/bestwines.py
+pandas/groups.py
+pandas/winemag-data-130k-v2.csv.gz
+seaborn/combined.csv
+seaborn/flights.csv
+seaborn/flights.csv.zip
+seaborn/hollywood.py
+seaborn/movies.csv
+seaborn/testflights.csv
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,3 +139,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
