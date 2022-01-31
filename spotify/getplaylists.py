@@ -3,6 +3,7 @@ trying to pull playlists from spotify
 
 following:
 https://stmorse.github.io/journal/spotify-api.html
+https://lvngd.com/blog/accessing-spotify-api-python/
 
 J. Knerr
 Jan 2022
@@ -29,7 +30,25 @@ def main():
 
     # save the access token
     access_token = auth_response_data['access_token']
-    print(access_token)
+#   print(access_token)
+#   print(auth_response_data)
+    headers = {
+        'Authorization': 'Bearer {token}'.format(token=access_token)
+    }
+    # to get playlists
+#   BASE_URL = 'https://api.spotify.com/v1/me/playlists'
+#   r = requests.get(BASE_URL, headers=headers)
+#   r = r.json()
+#   print(r)
+
+    BASE_URL = 'https://api.spotify.com/v1/'
+    featured_playlists_endpoint = 'browse/featured-playlists/?limit=50'
+    featured_playlists_url = ''.join([BASE_URL,featured_playlists_endpoint])
+    response = requests.get(featured_playlists_url,headers=headers)
+    playlists = response.json().get('playlists').get('items')
+    print(playlists[0])
+
+    # how to get user's public playlists, liked songs
 
 
 def readSecrets(filename):
