@@ -70,10 +70,13 @@ def displayTracks(href, headers):
     thetracks = r.get('items')
     for i in range(len(thetracks)):
         track = thetracks[i]["track"]
-        print(i, track["name"])
-        print("  ", track["album"]["name"])
-        for j in range(len(track["artists"])):
-            print("    ", track["artists"][j]["name"])
+        if track is not None:
+            print(i, track["name"])
+            print("  ", track["album"]["name"])
+            for j in range(len(track["artists"])):
+                print("    ", track["artists"][j]["name"])
+        else:
+            print(i, "None")
     print("#"*40)
 
 
