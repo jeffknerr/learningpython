@@ -25,6 +25,8 @@ def main():
             done = True
         elif opt == "e":
             endswith(words, rules)
+        elif opt == "s":
+            startswith(words, rules)
         elif opt == "c":
             contains(words, rules)
         elif opt == "d":
@@ -44,6 +46,16 @@ def endswith(words, rules):
     # work backward through list so we don't skip items as we pop them
     for i in range(len(words)-1, -1, -1):
         if not words[i].endswith(letter):
+            words.pop(i)
+
+
+def startswith(words, rules):
+    """add startswith rule, take out all words that don't match"""
+    letter = input('starts with letter: ').lower()
+    rules['startswith'] = letter
+    # work backward through list so we don't skip items as we pop them
+    for i in range(len(words)-1, -1, -1):
+        if not words[i].startswith(letter):
             words.pop(i)
 
 
