@@ -1,7 +1,7 @@
 """
 trying to pull playlists from spotify
 
-following:
+started with:
 https://stmorse.github.io/journal/spotify-api.html
 https://lvngd.com/blog/accessing-spotify-api-python/
 
@@ -10,12 +10,15 @@ Jan 2022
 """
 
 import requests
+import click
 
 
-def main():
+@click.command()
+@click.option('--username', default="jeffknerr", help='spotify user name')
+@click.option('--gettracks', is_flag=True, help='add if you want tracks')
+def main(username, gettracks):
     """main prog for spotify read playlists program"""
     CLIENT_ID, CLIENT_SECRET = readSecrets("secrets")
-
     AUTH_URL = 'https://accounts.spotify.com/api/token'
 
     # POST
@@ -24,31 +27,57 @@ def main():
         'client_id': CLIENT_ID,
         'client_secret': CLIENT_SECRET,
     })
-
     # convert the response to JSON
     auth_response_data = auth_response.json()
-
     # save the access token
     access_token = auth_response_data['access_token']
-#   print(access_token)
-#   print(auth_response_data)
     headers = {
         'Authorization': 'Bearer {token}'.format(token=access_token)
     }
-    # to get playlists
-#   BASE_URL = 'https://api.spotify.com/v1/me/playlists'
-#   r = requests.get(BASE_URL, headers=headers)
-#   r = r.json()
-#   print(r)
 
-    BASE_URL = 'https://api.spotify.com/v1/'
-    featured_playlists_endpoint = 'browse/featured-playlists/?limit=50'
-    featured_playlists_url = ''.join([BASE_URL,featured_playlists_endpoint])
-    response = requests.get(featured_playlists_url,headers=headers)
-    playlists = response.json().get('playlists').get('items')
-    print(playlists[0])
+    # to get user playlists
+    BASE_URL = 'https://api.spotify.com/v1/users/%s/playlists' % username
+    offset = 0
+    limit = 50
+    done = False
+    while not done:
+        options = '/?offset=%d&limit=%d' % (offset, limit)
+        url = BASE_URL+options
+        r = requests.get(url, headers=headers)
+        r = r.json()
+        playlists = r.get('items')
+        if playlists is None:
+            print("Incorrect spotify username??? (%s)" % username)
+            done = True
+        else:
+            for i in range(len(playlists)):
+                p = playlists[i]
+                print(i+offset, p["name"])
+                if gettracks:
+                    tracks = playlists[i]["tracks"]
+                    href = tracks["href"]
+                    displayTracks(href, headers)
+            if len(playlists) == limit:
+                offset += limit
+            else:
+                done = True
 
-    # how to get user's public playlists, liked songs
+
+def displayTracks(href, headers):
+    """given href link, get all track info, display it/save it"""
+    r = requests.get(href, headers=headers)
+    r = r.json()
+    thetracks = r.get('items')
+    for i in range(len(thetracks)):
+        track = thetracks[i]["track"]
+        if track is not None:
+            print(i, track["name"])
+            print("  ", track["album"]["name"])
+            for j in range(len(track["artists"])):
+                print("    ", track["artists"][j]["name"])
+        else:
+            print(i, "None")
+    print("#"*40)
 
 
 def readSecrets(filename):

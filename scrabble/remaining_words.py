@@ -13,10 +13,17 @@ April 2022
 # add multiple-letter adds to contains, does not contain
 # reuse functions?
 
+instructions = """
+
+use menu options to enter letters in word.
+hit <Enter> at menu prompt to see remaining words.
+"""
+
 def main():
     words = readwords()
     done = False
     rules = {}
+    print(instructions)
     while not done:
         print("-"*30)
         print("words remaining: %d" % (len(words)))
@@ -26,7 +33,7 @@ def main():
         elif opt == "e":
             endswith(words, rules)
         elif opt == "s":
-            startswith(words, rules)
+            startsWith(words, rules)
         elif opt == "c":
             contains(words, rules)
         elif opt == "d":
@@ -38,6 +45,14 @@ def main():
     for key in rules:
         print("%s %s" % (key, rules[key]))
 
+def startsWith(words, rules):
+    """add startsWith rule, take out all words that don't match"""
+    letter = input('starts with letter: ').lower()
+    rules['startswith'] = letter
+    # work backward through list so we don't skip items as we pop them
+    for i in range(len(words)-1, -1, -1):
+        if not words[i].startswith(letter):
+            words.pop(i)
 
 def endswith(words, rules):
     """add endswith rule, take out all words that don't match"""
